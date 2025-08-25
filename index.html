@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FPS Look Around</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #button3D {
+      position: absolute;
+      padding: 10px 20px;
+      background: #7412f4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+      z-index: 20;
+    }
+
+    .modal {
+      display: none; /* começa escondido */
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #222;
+      padding: 30px;
+      border-radius: 10px;
+      color: white;
+      width: 320px;
+      box-shadow: 0 0 15px #a811ff;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #c062fa;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #802be8;
+    }
+
+    #crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px; /* metade da largura para centralizar */
+  margin-top: -10px;  /* metade da altura para centralizar */
+  pointer-events: none; /* para o mouse "passar" pela mira */
+  z-index: 1000;
+}
+
+#crosshair::before,
+#crosshair::after {
+  content: '';
+  position: absolute;
+  background: white;
+}
+
+#crosshair::before {
+  left: 9px;
+  top: 0;
+  width: 2px;
+  height: 20px;
+}
+
+#crosshair::after {
+  top: 9px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+}
+
+
+  </style>
+</head>
+<body>
+  <div id="info">Mova o mouse para olhar ao redor. Clique no botão quando aparecer.</div>
+  <button id="button3D" onclick="mostarOI()">Shooyu</button>
+  <div id="imageOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000;">
+    <img id="popupImage" src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybHZkenM5eG80ZHZwNmdtODFkZHl3Z2JreDJ0MmEydWxzbzI2bGVwdSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/p0ydOvZ6xm8PMe5qlr/giphy.gif" alt="Imagem Popup" style="max-width:90%; max-height:90%; border-radius:8px; box-shadow: 0 0 20px #00ff00;">
+    <button id="closeImageBtn" style="position:absolute; top:20px; right:20px; font-size:24px; background:none; border:none; color:white; cursor:pointer;">&times;</button>
+  </div>
+
+  <div id="crosshair"></div>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label for="username">Usuário:</label><br />
+        <input type="text" id="username" name="username" required /><br /><br />
+        <label for="password">Senha:</label><br />
+        <input type="password" id="password" name="password" required /><br /><br />
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
